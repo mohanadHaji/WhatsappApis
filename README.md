@@ -35,7 +35,7 @@ Before you begin, ensure you have the following installed:
             "ExpirationInMinutes": 60
           },
           "WhatsAppSettings": {
-            "BaseUrl": "[https://graph.facebook.com/v22.0/620484351142644/messages](https://graph.facebook.com/v22.0/620484351142644/messages)"
+            "BaseUrl": "https://graph.facebook.com/v22.0/620484351142644/messages"
           },
           "Logging": {
             "LogLevel": {
