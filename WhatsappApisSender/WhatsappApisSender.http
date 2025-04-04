@@ -1,0 +1,6 @@
+@WhatsappApisSender_HostAddress = http://localhost:5228
+
+GET {{WhatsappApisSender_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,26 @@
+# Ignore build outputs
+bin/
+obj/
+out/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore VS Code settings
+.vscode/
+.vs/
+
+# Ignore NuGet packages
+packages/
+project.lock.json
+*.nupkg
+
+# Ignore logs and temp files
+logs/
+*.log
+
+Migrations/
+appsettings.Development.json
