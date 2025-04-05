@@ -14,13 +14,42 @@ var builder = WebApplication.CreateBuilder(args);
 IServiceCollection services = builder.Services;
 var environment = builder.Environment;
 
+// Configure cookie policy
+services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.Lax;
+    options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
+    options.Secure = CookieSecurePolicy.Always;
+});
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "http://192.168.1.10:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 services.AddControllers();
 
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddCookie(IdentityConstants.ApplicationScheme)
+    .AddCookie(IdentityConstants.ApplicationScheme, options => 
+    {
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.HttpOnly = true;
+        options.Cookie.Name = "authjs.session-token";
+        options.Cookie.Domain = "localhost";
+        options.Cookie.Path = "/";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+    })
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -62,12 +91,23 @@ if (environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
-app.InitRolesAsync().Wait();
+// Force HTTPS redirection
 app.UseHttpsRedirection();
 
+// Use cookie policy
+app.UseCookiePolicy();
+
+// Add CORS middleware
+app.UseCors();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+// Initialize roles
+app.InitRolesAsync().Wait();
+
 app.Run();
