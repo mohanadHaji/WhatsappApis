@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using WhatsappApisSender.Controllers.Schema.UserSchema;
 using WhatsappApisSender.Models;
 using WhatsappApisSender.Services;
 using WhatsappApisSender.Storage;
@@ -7,17 +6,23 @@ using WhatsappApisSender.Utils;
 
 namespace WhatsappApisSender.Handlers
 {
-    public class AuthenticationHandler(IStorageManager<AppUser> storageManager, ITokenService tokenService) : IAuthenticationHandler
+    public class AuthenticationHandler(IStorageManager storageManager, ITokenService tokenService) : IAuthenticationHandler
     {
-        private readonly IStorageManager<AppUser> _storageManager = storageManager;
+        private readonly IStorageManager _storageManager = storageManager;
         private readonly ITokenService _tokenService = tokenService;
 
-        public async Task<(bool Success, string Message)> RegisterAsync(string email, string password)
+        public async Task<(bool Success, string Message)> RegisterAsync(CreateUserRequest createUser)
         {
-            var user = new AppUser { UserName = email, Email = email };
-            var result = await storageManager.CreateUserAsync(user, password, AuthConstants.UserRole);
+            var user = new AppUser { UserName = createUser.Username, Email = createUser.Email };
+            var result = await storageManager.CreateUserAsync(user, createUser.Password, AuthConstants.UserRole);
 
-            return (true, string.Empty);
+            if (result.Succeeded)
+            {
+                return (true, string.Empty);
+            }
+
+            return (false, result.Errors);
+            
         }
 
         public async Task<(bool Success, string AccessToken, string RefreshToken, string Message)> LoginAsync(string email, string password)

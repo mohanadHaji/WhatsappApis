@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using WhatsappApisSender.Controllers.Schema.UserSchema;
 using WhatsappApisSender.Handlers;
 
 namespace WhatsappApisSender.Controllers
@@ -11,16 +12,19 @@ namespace WhatsappApisSender.Controllers
         private readonly IAuthenticationHandler _authenticationHandler = authenticationHandler;
 
         [HttpPost("register")] 
-        public async Task<IActionResult> Register([FromBody] RegisterRequest model)
+        public async Task<IActionResult> Register([FromBody] CreateUserRequest model)
         {
-            var (Success, Message) = await _authenticationHandler.RegisterAsync(model.Email, model.Password);
-            if (!Success) return BadRequest(Message);
+            List<string> validationErrors = model.Validate();
+            if (validationErrors.Count != 0) return BadRequest(validationErrors);
+
+            var (Success, Message) = await _authenticationHandler.RegisterAsync(model);
+            if (!Success) return StatusCode(500, Message);
 
             return Created();
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest model)
+        public async Task<IActionResult> Login([FromBody] Schema.UserSchema.LoginRequest model)
         {
             var (Success, AccessToken, RefreshToken, Message) = await _authenticationHandler.LoginAsync(model.Email, model.Password);
             if (!Success) return Unauthorized(Message);

@@ -1,8 +1,10 @@
-﻿namespace WhatsappApisSender.Handlers
+﻿using WhatsappApisSender.Controllers.Schema.UserSchema;
+
+namespace WhatsappApisSender.Handlers
 {
     public interface IAuthenticationHandler
     {
-        Task<(bool Success, string Message)> RegisterAsync(string email, string password);
+        Task<(bool Success, string Message)> RegisterAsync(CreateUserRequest createUser);
 
         Task<(bool Success, string AccessToken, string RefreshToken, string Message)> LoginAsync(string email, string password);
 
