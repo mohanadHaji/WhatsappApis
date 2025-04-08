@@ -11,5 +11,6 @@ namespace WhatsappApisSender.Handlers
         Task<(bool Success, List<UserMessage> Messages)> HandelGetContactHistory(string userEmail, string contact);
         Task<(bool Success, List<UserScheduledMessage> Messages)> HandelGetScheduledMessages(string userEmail);
         Task<(bool Success, string Message)> HandelRemoveScheduledMessage(string messageId);
+        Task<(bool Success, string Message)> HandelUpdateScheduledMessage(string messageId, DateTime newDueDateUTC);
     }
 }
