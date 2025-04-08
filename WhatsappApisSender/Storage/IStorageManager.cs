@@ -22,5 +22,6 @@ namespace WhatsappApisSender.Storage
         void UpdateUserHistory(AppUser user, UserMessage message);
         void AddScheduledMessage(AppUser user, UserScheduledMessage message);
         Task<bool> RemovecheduledMessage(string messageId);
+        Task<bool> UpdateScheduledMessage(string messageId, DateTime newDueDateUTC);
     }
 }
