@@ -30,6 +30,25 @@ namespace WhatsappApisSender.Controllers
             return Created();
         }
 
+        [HttpPost("update-scheduled-messages")]
+        public async Task<IActionResult> UpdateScheduledMessage([FromBody] UpdateScheduledMessageSchema model)
+        {
+            if (string.IsNullOrEmpty(model.Id))
+            {
+                return BadRequest("Message ID is required");
+            }
+
+            if (model.DueDateUTC <= DateTime.UtcNow)
+            {
+                return BadRequest("Due date must be in the future");
+            }
+
+            var (Success, Message) = await _userHandlers.HandelUpdateScheduledMessage(model.Id, model.DueDateUTC);
+            if (!Success) return BadRequest(Message);
+
+            return Ok(new { success = true, message = Message });
+        }
+
         [HttpPost("cancel-scheduled-message")]
         public async Task<IActionResult> CancelScheduledMessage([FromBody] string messageId)
         {
