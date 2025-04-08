@@ -75,5 +75,12 @@ namespace WhatsappApisSender.Handlers
             if (await _storageManager.RemovecheduledMessage(messageId)) return (true, "Removed message");
             return (false, "Message not found");
         }
+
+        public async Task<(bool Success, string Message)> HandelUpdateScheduledMessage(string messageId, DateTime newDueDateUTC)
+        {
+            if (await _storageManager.UpdateScheduledMessage(messageId, newDueDateUTC)) 
+                return (true, "Message updated successfully");
+            return (false, "Message not found");
+        }
     }
 }
