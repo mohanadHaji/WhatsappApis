@@ -158,5 +158,20 @@ namespace WhatsappApisSender.Storage
             var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
             return new OperationResult { Succeeded = result.Succeeded, Errors = string.Join(", ", result.Errors.Select(e => $"{e.Code}: {e.Description}")) };
         }
+
+        public async Task<bool> UpdateScheduledMessage(string messageId, DateTime newDueDateUTC)
+        {
+            var message = await _context.UserScheduledMessages.FirstOrDefaultAsync(m => m.Id.ToString() == messageId);
+
+            if (message == null)
+            {
+                return false;
+            }
+
+            message.DueDateUTC = newDueDateUTC;
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }
