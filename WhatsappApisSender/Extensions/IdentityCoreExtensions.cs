@@ -8,14 +8,14 @@ namespace WhatsappApisSender.Extensions
 {
     public static class IdentityCoreExtensions
     {
-        public static void AddIdentityCoreWithPostgreSQL(this WebApplicationBuilder builder)
+        public static void AddIdentityCoreWithMsSQL(this WebApplicationBuilder builder)
         {
             builder.Services.AddIdentityCore<AppUser>()
                 .AddRoles<IdentityRole>()
                 .AddSignInManager()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
-            builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+            builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
         }
 
         public static async Task InitRolesAsync(this WebApplication app)

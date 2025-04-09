@@ -6,7 +6,6 @@ using WhatsappApisSender.Configurations;
 using WhatsappApisSender.Extensions;
 using WhatsappApisSender.Handlers;
 using WhatsappApisSender.Middleware;
-using WhatsappApisSender.Models;
 using WhatsappApisSender.Services;
 using WhatsappApisSender.Storage;
 
@@ -66,7 +65,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 services.AddAuthorization();
 
 // this connect to postgrsSql database
-builder.AddIdentityCoreWithPostgreSQL();
+builder.AddIdentityCoreWithMsSQL();
 
 services.AddSwagger();
 services.AddOptions();
@@ -88,8 +87,9 @@ if (environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.ApplyMigrations();
 }
+
+app.ApplyMigrations();
 
 // Force HTTPS redirection
 app.UseHttpsRedirection();

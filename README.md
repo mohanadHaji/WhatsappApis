@@ -8,12 +8,12 @@ Before you begin, ensure you have the following installed:
 
 * **[.NET 8 SDK](https://dotnet.microsoft.com/en-us/download):** Required for building and running the application.
 * **[Visual Studio 2022](https://visualstudio.microsoft.com/):** Recommended for development.
-* **[PostgreSQL for Windows](https://www.postgresql.org/download/windows/):** For local database setup.
+* **[MsSql for Windows](https://go.microsoft.com/fwlink/p/?linkid=2215158&clcid=0x409&culture=en-us&country=us):** For local database setup.
 
-    * If using the default PostgreSQL settings, you can use the following connection string, replacing `1234` with your password:
+    * If using the default MsSql settings, you can use the following connection string, replacing `1234` with your password:
 
         ```
-        Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=1234;SSL Mode=Disable
+        Server=localhost;Database=master;Trusted_Connection=True;TrustServerCertificate=True;
         ```
 
 ## Configuration
@@ -31,7 +31,7 @@ Before you begin, ensure you have the following installed:
           "Jwt": {
             "Issuer": "https://localhost:5001",
             "Audience": "https://localhost:5001",
-            "Secret": "ThisIsMySuperSecretKey12345",
+            "Secret": "p7xkOiFSk3B6Wj9zFJXsY3OEgZcQa2gcrJPt1dOG+dc=",
             "ExpirationInMinutes": 60
           },
           "WhatsAppSettings": {
@@ -46,7 +46,7 @@ Before you begin, ensure you have the following installed:
         }
         ```
 
-    * **`ConnectionStrings:Database`:** Your PostgreSQL connection string.
+    * **`ConnectionStrings:Database`:** Your MsSql connection string.
     * **`Jwt:Issuer` and `Jwt:Audience`:** The issuer and audience for JWT authentication.
     * **`Jwt:Secret`:** A strong, secure secret key for JWT signing.
     * **`Jwt:ExpirationInMinutes`:** The JWT expiration time in minutes.
@@ -92,6 +92,6 @@ Before you begin, ensure you have the following installed:
 
 **Important Notes:**
 
-* Ensure your PostgreSQL server is running and accessible.
+* Ensure your MsSql server is running and accessible.
 * Verify that the connection string in `appsettings.Development.json` is correct.
-* If you modified the default PostgreSQL port or configuration, update the connection string accordingly.
+* If you modified the default MsSql port or configuration, update the connection string accordingly.
