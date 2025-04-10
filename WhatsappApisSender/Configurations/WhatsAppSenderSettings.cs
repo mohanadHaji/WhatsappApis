@@ -1,6 +1,6 @@
 ﻿namespace WhatsappApisSender.Configurations
 {
-    public class WhatsAppSettings
+    public class WhatsAppSenderSettings
     {
         public string BaseUrl { get; set; }
     }

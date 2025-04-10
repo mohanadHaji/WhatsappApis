@@ -9,10 +9,10 @@ using WhatsappApisSender.Models;
 
 namespace WhatsappApisSender.Handlers
 {
-    public class WatsappSenderHandlers(IHttpClientFactory httpClientFactory, IOptions<WhatsAppSettings> options, IStorageManager storageManager) : IWatsappSenderHandlers
+    public class WatsappSenderHandlers(IHttpClientFactory httpClientFactory, IOptions<WhatsAppSenderSettings> options, IStorageManager storageManager) : IWatsappSenderHandlers
     {
         private readonly HttpClient _httpClient = httpClientFactory.CreateClient();
-        private readonly WhatsAppSettings _whatsAppSettings = options.Value;
+        private readonly WhatsAppSenderSettings _whatsAppSettings = options.Value;
         private readonly IStorageManager _storageManager = storageManager;
 
         public async Task<(bool IsSuccess, string ResponseContent)> SendMessageAsync(BaseSchema message, string token, string userEmail)
@@ -70,5 +70,6 @@ namespace WhatsappApisSender.Handlers
                 _storageManager.UpdateUserHistory(user, new UserMessage() { PhoneNumber = toPhoneNumber, RequestBody = requestBody, IsSuccessfull = response.IsSuccessStatusCode, IsScheduled = true });
             }
         }
+
     }
 }

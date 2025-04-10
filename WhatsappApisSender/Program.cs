@@ -74,10 +74,12 @@ services.AddHttpClient();
 // inject services
 services.AddSingleton<ITokenService, TokenService>();
 services.AddScoped<IStorageManager, StorageManager>();
-services.Configure<WhatsAppSettings>(builder.Configuration.GetSection("WhatsAppSettings"));
+services.Configure<WhatsAppSenderSettings>(builder.Configuration.GetSection(nameof(WhatsAppSenderSettings)));
+services.Configure<WhatsAppStatusSettings>(builder.Configuration.GetSection(nameof(WhatsAppStatusSettings)));
 services.AddScoped<IAuthenticationHandler, AuthenticationHandler>();
 services.AddScoped<IWatsappSenderHandlers, WatsappSenderHandlers>();
 services.AddScoped<IUserHandlers, UserHandlers>();
+services.AddScoped<IWhatsappStatusHandlers, WhatsappStatusHandlers>();
 services.AddHostedService<MessageSenderService>();
 
 var app = builder.Build();
